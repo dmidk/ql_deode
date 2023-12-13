@@ -90,11 +90,15 @@ elif FC_H_deacc < 100:
 else:
     prevFC_str = '0'+str(FC_H_deacc)
     
-# expected grib file name: GRIBPFDEODdomId+FC_HHH_strh00m00s
-# GRIBPFDEOD DK_500x500_1500m +0043h00m00s
-myGribFile = 'GRIBPFDEOD{0}+{1}h00m00s'.format(domId,FC_HHH_str)
+# expected grib file name: 'GRIBPFDEOD+' domId + FC_HHH_str + strGrib_min_sec
+
+# Logic for now works to plot only hourly fc
+strGrib_min_sec = 'h00m00s'
+
+myGribFile = 'GRIBPFDEOD{0}+{1}{2}'.format(domId,FC_HHH_str,strGrib_min_sec)
+
 if FC_H_deacc > 0:
-    myGribFile_prevFC = 'GRIBPFDEOD{0}+{1}h00m00s'.format(domId,prevFC_str)
+    myGribFile_prevFC     = 'GRIBPFDEOD{0}+{1}{2}'.format(domId,prevFC_str,strGrib_min_sec)
 
 print('--> Source path for grib file is: ' + sourcePath)
 print('--> Searching for grib file: ' + myGribFile)
