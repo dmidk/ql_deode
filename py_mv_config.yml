@@ -2,7 +2,9 @@
 
 # List of 'shortName' fields to plot --> if not available, create the necessary attributes for the variable below
 # For plotting 10m wind speed -> '10mw', otherwise use the expected grib shortName 
-shortNameList: ['2t','t'] #'10mw','u','tirf'] #,'prmsl'
+#shortNameList: ['2t','t','10mw','u','tirf','msl','sp']
+#shortNameList: ['sp','10mw']
+shortNameList: ['msl']
 
 # In case of accumulated fields, given the forecast time T, we calculate 'T - T_int_accum_hour' 
 int_accum_hour: 3
@@ -10,9 +12,7 @@ int_accum_hour: 3
 # Custom lat/lon domain 
 # [lat_bottom_left, lon_bottom_left, lat_top_right, lon_top_right]
 #DK
-#lat_lon_map_area: [52,3,58,17]  #[52,3,60,17] 
-#PT
-lat_lon_map_area: [35,-16,43,-2]
+lat_lon_map_area: [52,4,60,18] 
 
 # increment to diplay lat/lon grid on map
 lat_inc: 2
@@ -88,7 +88,7 @@ sp:
 ####################
 
 # Pressure reduced to MSL
-prmsl:
+msl:
   # expected typeOfLevel as in grib file
   typeOfLevel: 'meanSea'
   # expected level

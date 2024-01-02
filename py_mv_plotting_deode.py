@@ -211,6 +211,10 @@ for shortName in varList:
         elif shortName == 'sp':
             int_min = np.floor(myMin/100.0)    
             int_max = np.ceil(myMax/100.0) 
+    	# mean sea level pressure
+        elif shortName == 'msl':
+            int_min = np.floor(myMin/100.0)    
+            int_max = np.ceil(myMax/100.0) 
         else:
             int_min = np.floor(myMin)    
             int_max = np.ceil(myMax)         
