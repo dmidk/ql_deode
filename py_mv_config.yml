@@ -1,8 +1,10 @@
 # Fields are extract from grib file according to expected shortName, typeOfLevel, level. 
 
 # Plot fields in shortNameList --> if not available, create the necessary attributes for the variable below
+shortNameList: ['msl','10mw']
+#shortNameList: ['sprate'] #,'2t', '10mw','t'] # Italy Ciaran 11-2023
 #shortNameList: ['tirf'] #,'2t', '10mw','t'] # Italy Ciaran 11-2023
-shortNameList: ['10mw'] # Brittany Ciaran 11-2023
+#shortNameList: ['10mw'] # Brittany Ciaran 11-2023
 #shortNameList: ['z']
 #shortNameList: ['2t'] # AQ-Benelux 07-2018
 
@@ -13,20 +15,30 @@ shortNameList: ['10mw'] # Brittany Ciaran 11-2023
 # rprate or tirf (?): total accumulated precipitation 'T - T_int_accum_hour' (int_accum_hour to set below)
 
 # In case of accumulated fields, given the forecast time T, we calculate 'T - T_int_accum_hour' 
-int_accum_hour: 3
+int_accum_hour: 1
 
 # Custom lat/lon domain 
 # [lat_bottom_left, lon_bottom_left, lat_top_right, lon_top_right]
 #lat_lon_map_area: [50.25,2.75,53.75,7] # AQ_Benelux 07-2018
-lat_lon_map_area: [47,-6,50,-3] # Brittany Ciaran 11-2023
+#lat_lon_map_area: [47,-6,50,-3] # Brittany Ciaran 11-2023
 #lat_lon_map_area: [41.5,9.5,45.5,13.0] # Italy Ciaran 11-2023
+#lat_lon_map_area: [46.5,9.5,50.5,13.5] # Bavaria 12-2023
+lat_lon_map_area: [52.0,4.0,58.0,16.0] # DK Pia 12-2023
 lat_inc: 1
 lon_inc: 1
 
+
+
 ##################################################
 # Attributes for every variables in shortNameList
+# Variables are identified by the expected shortName used in the gribfile
 ##################################################
 
+####################
+# typeOfLevel = surface
+####################
+
+# Time integral of rain flux (alternative when we cannot extract rprate from grib)
 tirf:
   # expected typeOfLevel as in grib file
   typeOfLevel: 'surface'
@@ -38,8 +50,73 @@ tirf:
   # leave list empty 'countList: []' to plot using min/max of the variable 
   contour_shade_min_level_colour: "cyan"
   contour_shade_max_level_colour: "purple"
-  countList: [1,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,36,40,44,48,52,56,60]
+  countList: [1,2,4,6,8,10,12,14,16,18,20,22,24,28,32,40,48,64,80,96,112] #[1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,18,20] #[1,2,4,6,8,10,12,14,16,18,20]  #,22,24,26,28,30,32,36]  #,40] #,46,50,54,60,66,74]
 
+# Rain precipitation rate
+rprate:
+  # expected typeOfLevel as in grib file
+  typeOfLevel: 'surface'
+  # expected level
+  level: '0'
+  # if accumulated field
+  accumulated: True
+  # Option for customizing the plot (colorbar and coutour)
+  # leave list empty 'countList: []' to plot using min/max of the variable 
+  contour_shade_min_level_colour: "cyan"
+  contour_shade_max_level_colour: "purple"
+  countList: [] 
+
+# Snow precipitation rate
+sprate:
+  # expected typeOfLevel as in grib file
+  typeOfLevel: 'surface'
+  # expected level
+  level: '0'
+  # if accumulated field
+  accumulated: True
+  # Option for customizing the plot (colorbar and coutour)
+  # leave list empty 'countList: []' to plot using min/max of the variable 
+  contour_shade_min_level_colour: "cyan"
+  contour_shade_max_level_colour: "purple"
+  countList: [1,2,4,6,8,10,12,14,16,18,20,22,24,28,32,40]
+
+# Surface pressure
+sp:
+  # expected typeOfLevel as in grib file
+  typeOfLevel: 'surface'
+  # expected level
+  level: '0'
+  # if accumulated field
+  accumulated: False
+  # Option for customizing the plot (colorbar and coutour)
+  # leave list empty 'countList: []' to plot using min/max of the variable 
+  contour_shade_min_level_colour: "yellow"
+  contour_shade_max_level_colour: "green"
+  countList:  [950,951,952,953,954, 955, 960, 965, 970, 975, 980, 985, 990, 995, 1000, 1005, 1010, 1015, 1020, 1025, 1030, 1035, 1040, 1045]
+
+####################
+# typeOfLevel = meanSea
+####################
+
+# Pressure reduced to MSL
+msl:
+  # expected typeOfLevel as in grib file
+  typeOfLevel: 'meanSea'
+  # expected level
+  level: '0'
+  # if accumulated field
+  accumulated: False
+  # Option for customizing the plot (colorbar and coutour)
+  # leave list empty 'countList: []' to plot using min/max of the variable 
+  contour_shade_min_level_colour: "yellow"
+  contour_shade_max_level_colour: "green"
+  countList: [950,951,952,953,954, 955, 960, 965, 970, 975, 980, 985, 990, 995, 1000, 1005, 1010, 1015, 1020, 1025, 1030, 1035, 1040, 1045] 
+
+####################
+# typeOfLevel = heightAboveGround
+####################
+
+# 2m temeprature
 2t:
   # expected typeOfLevel as in grib file
   typeOfLevel: 'heightAboveGround'
@@ -49,11 +126,11 @@ tirf:
   accumulated: False
   # Option for customizing the plot (colorbar and coutour)
   # leave list empty 'countList: []' to plot using min/max of the variable 
-  contour_shade_min_level_colour: "blue_green"
-  contour_shade_max_level_colour: "magenta"
-  #countList: []   
+  contour_shade_min_level_colour: "blue"
+  contour_shade_max_level_colour: "red"
   countList: [1,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,36,40]
 
+# 10m wind speed
 10mw:
   # expected typeOfLevel as in grib file
   typeOfLevel: 'heightAboveGround'
@@ -63,9 +140,27 @@ tirf:
   accumulated: False
   # Option for customizing the plot (colorbar and coutour)
   # leave list empty 'countList: []' to plot using min/max of the variable 
-  contour_shade_min_level_colour: "blue_green"    
-  contour_shade_max_level_colour: "magenta"
+  contour_shade_min_level_colour: "green"    
+  contour_shade_max_level_colour: "red"
   countList: [1,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,36,40, 48] #[0,1,2,3,4,5,6,7,8,9,10,12,14,16]
+
+# 2m relative humidity
+2r:
+  # expected typeOfLevel as in grib file
+  typeOfLevel: 'heightAboveGround'
+  # expected level
+  level: '2'
+  # if accumulated field
+  accumulated: False
+  # Option for customizing the plot (colorbar and coutour)
+  # leave list empty 'countList: []' to plot using min/max of the variable 
+  contour_shade_min_level_colour: "blue"
+  contour_shade_max_level_colour: "red"
+  countList: []   
+  
+####################
+# typeOfLevel =  isobaricInhPa
+####################
 
 t:
   # expected typeOfLevel as in grib file
@@ -80,11 +175,25 @@ t:
   contour_shade_max_level_colour: "red"
   countList: []
 
+# Specify 'u' or 'v' to calculate wind speed at a given level
+u:
+  # expected typeOfLevel as in grib file
+  typeOfLevel: 'isobaricInhPa'
+  # expected level
+  level: '850'
+  # if accumulated field
+  accumulated: False
+  # Option for customizing the plot (colorbar and coutour)
+  # leave list empty 'countList: []' to plot using min/max of the variable 
+  contour_shade_min_level_colour: "blue_green"    
+  contour_shade_max_level_colour: "magenta"
+  countList: [] #[0,1,2,3,4,5,6,7,8,9,10,12,14,16,18,20,22]
+
 z:
   # expected typeOfLevel as in grib file
   typeOfLevel: 'isobaricInhPa'
   # expected level
-  level: '1000'
+  level: '850'
   # if accumulated field
   accumulated: False
   # Option for customizing the plot (colorbar and coutour)
@@ -92,3 +201,4 @@ z:
   contour_shade_min_level_colour: "cyan"
   contour_shade_max_level_colour: "magenta"
   countList: []
+

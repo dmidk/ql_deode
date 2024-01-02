@@ -90,11 +90,15 @@ elif FC_H_deacc < 100:
 else:
     prevFC_str = '0'+str(FC_H_deacc)
     
-# expected grib file name: GRIBPFDEODdomId+FC_HHH_strh00m00s
-# GRIBPFDEOD DK_500x500_1500m +0043h00m00s
-myGribFile = 'GRIBPFDEOD{0}+{1}h00m00s'.format(domId,FC_HHH_str)
+# expected grib file name: 'GRIBPFDEOD+' domId + FC_HHH_str + strGrib_min_sec
+
+# Logic for now works to plot only hourly fc
+strGrib_min_sec = 'h00m00s'
+
+myGribFile = 'GRIBPFDEOD{0}+{1}{2}'.format(domId,FC_HHH_str,strGrib_min_sec)
+
 if FC_H_deacc > 0:
-    myGribFile_prevFC = 'GRIBPFDEOD{0}+{1}h00m00s'.format(domId,prevFC_str)
+    myGribFile_prevFC     = 'GRIBPFDEOD{0}+{1}{2}'.format(domId,prevFC_str,strGrib_min_sec)
 
 print('--> Source path for grib file is: ' + sourcePath)
 print('--> Searching for grib file: ' + myGribFile)
@@ -124,10 +128,6 @@ else:
     
     
 print('--> Grib file found: ' + gbFile)
-# this is for deaccumulated precipitation
-if FC_H_deacc > 0:    
-    print('--> Grib file for calculating accumulated field: ' + gbFile_prevFC) 
-
 myFC = mv.read(gbFile) 
 # this is necesary because mv complains about gridType = lambert_lam
 myFC = mv.grib_set(myFC,["gridType",'lambert'])
@@ -147,6 +147,9 @@ for shortName in varList:
 
     if accumulated and FC_H_deacc == 0:
         continue
+
+    if accumulated and FC_H_deacc > 0:    
+        print('--> Grib file for calculating accumulated field: ' + gbFile_prevFC) 
     
     print('--> Plotting variable ' + shortName) 
     print('    - typeOfLevel: ' + typeOfLevel) 
@@ -170,14 +173,16 @@ for shortName in varList:
             var = mv.sqrt(u_10m*u_10m + v_10m*v_10m)
             var = mv.grib_set_long(var, ['paramId', 10])
             # calculate also direction
-            dir_10mw = mv.direction(u_10m, v_10m)
-            dir_10mw = mv.grib_set_long(dir_10mw, ["paramId", 3031])
+            dir_wind = mv.direction(u_10m, v_10m)
+            dir_wind = mv.grib_set_long(dir_wind, ["paramId", 3031])
         elif shortName == 'u' or shortName == 'v':
             u_10m =  myFC.select(shortName='u', typeOfLevel=typeOfLevel, level=level, stepRange=FC_step)
             v_10m =  myFC.select(shortName='v', typeOfLevel=typeOfLevel, level=level, stepRange=FC_step)
             var = mv.sqrt(u_10m*u_10m + v_10m*v_10m)
+            var = mv.grib_set_long(var, ['paramId', 10])
             # calculate also direction
-            dir_uv = mv.direction(u_10m, v_10m)
+            dir_wind = mv.direction(u_10m, v_10m)
+            dir_wind = mv.grib_set_long(dir_wind, ['paramId', 3031])
         else:
             var = myFC.select(shortName=shortName, typeOfLevel=typeOfLevel, level=level, stepRange=FC_step)
 
@@ -192,13 +197,18 @@ for shortName in varList:
     if len(countList) == 0:
         dynamic = True
 
-        # need to rescale to the expected units (find a way independed from shortName?)
-        # temp from kelvin to celcius
+        # need to rescale to the expected units, metview automatically does it for some variables 
+        # (find a way independed from shortName?)
+        # temperature
         if shortName == '2t' or shortName == 't':
             int_min = np.floor(myMin-273.15)    
             int_max = np.ceil(myMax-273.15) 
-	# geopotential
+    	# geopotential
         elif shortName == 'z':
+            int_min = np.floor(myMin/100.0)    
+            int_max = np.ceil(myMax/100.0) 
+    	# surface pressure
+        elif shortName == 'sp' or shortName == 'msl':
             int_min = np.floor(myMin/100.0)    
             int_max = np.ceil(myMax/100.0) 
         else:
@@ -211,6 +221,8 @@ for shortName in varList:
                     int_max = 2
 
         interval = int_max - int_min     
+        
+        #print('interval ' + str(interval))
 
         if interval < 20:
             interval_step = 1 
@@ -222,6 +234,8 @@ for shortName in varList:
             interval_step = 4
         elif interval < 100:
            interval_step = 5
+        elif interval < 200:
+           interval_step = 10
         elif interval < 500:
            interval_step = 25
         elif interval < 1000:
@@ -231,6 +245,7 @@ for shortName in varList:
         else:
            interval_step = 250
  
+
     coastlines = mv.mcoast(
         map_coastline_land_shade        = "on",
         map_coastline_land_shade_colour = "RGB(0.9448,0.8819,0.765)",
@@ -295,13 +310,13 @@ for shortName in varList:
         plotName = expId + '.' + shortName + '.' + YYYY+MM+DD+HH+'T'+FC_step
     
     mv.setoutput(mv.png_output(output_name=plotName,output_width=1200))
-    
+    # define legend
+    legend = mv.mlegend(
+        legend_automatic_position ="top",
+        legend_text_font_size=0.4,
+    )
     if accumulated and FC_H_deacc > 0:
         
-        legend = mv.mlegend(
-            legend_text_font_size = 0.6,
-        )
-
         title = mv.mtext(
             text_line_1 = "<grib_info key='name'/> [<grib_info key='units'/>];   <grib_info key='base-date' format='%Y%m%d %HUTC'/> Step: +<grib_info key='step'/>h [<grib_info key='valid-date' format='%Y%m%d %HUTC'/>]" + ' Deaccumulated: Step +' + FC_step + 'h minus Step +' + str(FC_H_deacc) + 'h',
             text_font_size=0.6,
@@ -319,10 +334,6 @@ for shortName in varList:
     
     else:
     
-        legend = mv.mlegend(
-            legend_text_font_size = 0.6,
-        )
-    
         title = mv.mtext(
             text_line_1 = "<grib_info key='name'/> [<grib_info key='units'/>]; <grib_info key='typeOfLevel'/> Level: <grib_info key='level'/>; <grib_info key='base-date' format='%Y%m%d %HUTC'/> Step: +<grib_info key='step'/>h [<grib_info key='valid-date' format='%Y%m%d %HUTC'/>]",
             text_font_size= 0.6
@@ -337,3 +348,4 @@ for shortName in varList:
         cmd = 'mv ' + plotName + '* ' + mydir
         subprocess.run(cmd, shell=True)
         print('     Plot saved in ' + os.path.join(mydir,plotName))    
+

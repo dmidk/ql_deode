@@ -30,10 +30,19 @@ userId=nhad
 #domNames=(DK_500x500_1500m)
 #expNames=(DK_1500m_Quad_20210708)
 
+#domNames=(bavaria_800x800_500m bavaria_800x800_750m bavaria_800x800_500m bavaria_800x800_500m)  
+#expNames=(harmonie_bavaria_500_2023dec harmonie_bavaria_750_2023dec harmonie_bavaria_500_2023dec_HRES harmonie_bavaria_750_2023dec_HRES) 
+domNames=(DA_1500x1500_500m DA_1500x1500_500m DA_1500x1500_500m)
+expNames=(harmonie_DA500g_SP ALARO_DA500g arome_DA500g)
+#domNames=(DK_1500x1500_500m)
+#expNames=(harmonie_DK500g_SP)
+
+#domNames=(bavaria_800x800_750m )   
+#expNames=(harmonie_bavaria_750_2023dec_HRES )  
 #domNames=(ITA_800x800_500m ITA_800x800_750m) 
-#expNames=(harmonie_ita_500_ciaran_HRES harmonie_ita_750_ciaran_HRES) 
-domNames=(brtny_800x800_500m brtny_800x800_500m brtny_800x800_750m brtny_800x800_750m ) 
-expNames=(harmonie_brittany_500_ciaran harmonie_brittany_500_ciaran_HRES harmonie_brittany_750_ciaran harmonie_brittany_750_ciaran_HRES) 
+#expNames=(harmonie_ita_500_ciaran harmonie_ita_750_ciaran) 
+#domNames=(brtny_800x800_500m brtny_800x800_500m brtny_800x800_750m brtny_800x800_750m ) 
+#expNames=(harmonie_brittany_500_ciaran harmonie_brittany_500_ciaran_HRES harmonie_brittany_750_ciaran harmonie_brittany_750_ciaran_HRES) 
 #domNames=(brtny_800x800_500m)
 #expNames=(harmonie_brittany_500_ciaran)
 #domNames=(NL_800x800_500m NL_800x800_750m NL_800x800_750m)
@@ -49,19 +58,19 @@ year2=2023 # Ciaran
 #year1=2018 # AQ Benelux
 #year2=2018 # AQ Benelux
 # Start and end month
-month1=11
-month2=11
+month1=12
+month2=12
 #month1=07 # AQ Benelux
 #month2=07 # AQ Benelux
 # Start and end day
-day1=01
-day2=01
-day1=24 # AQ Benelux
-day2=25 # AQ Benelux
+day1=20
+day2=20
+#day1=24 # AQ Benelux
+#day2=25 # AQ Benelux
 # Start and end fc length
-fc1=00
-fc2=48
-inc=3
+fc1=39
+fc2=42
+inc=1
 
 # --> Adjust dates/time (YEAR, MONTH, DAY, FC STEP) in loops below 
 
