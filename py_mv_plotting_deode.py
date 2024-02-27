@@ -105,19 +105,20 @@ print('--> Searching for grib file: ' + myGribFile)
     
 if getFromEc:
     
-    cmd ='ecp -u ' + sourcePath + '/{0}/{1}/{2}/{3}/{4}/{5}'.format(expId,YYYY,MM,DD,HH, myGribFile) + ' ' + destPath
-    print('Executing cmd ' + cmd)    
-    subprocess.run(cmd, shell=True)
-    
-    gbFile = destPath + '/{0}'.format(myGribFile)    
-
-    #this is for deaccumulated precipitation
-    if FC_H_deacc > 0:
-        cmd ='ecp -u ' + sourcePath + '/{0}/{1}/{2}/{3}/{4}/{5}'.format(expId,YYYY,MM,DD,HH, myGribFile_prevFC) + ' ' + destPath
+    gbFile = destPath + '/{0}'.format(myGribFile) 
+    if not os.path.exists(gbFile):
+        cmd ='ecp -u ' + sourcePath + '/{0}/archive/{1}/{2}/{3}/{4}/{5}'.format(expId,YYYY,MM,DD,HH, myGribFile) + ' ' + destPath
         print('Executing cmd ' + cmd)    
         subprocess.run(cmd, shell=True)
     
+    #this is for deaccumulated precipitation       
+    if FC_H_deacc > 0:
         gbFile_prevFC = destPath + '/{0}'.format(myGribFile_prevFC)    
+        if not os.path.exists(gbFile_prevFC):    
+            cmd ='ecp -u ' + sourcePath + '/{0}/archive/{1}/{2}/{3}/{4}/{5}'.format(expId,YYYY,MM,DD,HH, myGribFile_prevFC) + ' ' + destPath
+            print('Executing cmd ' + cmd)    
+            subprocess.run(cmd, shell=True)
+    
     
 else:
     
