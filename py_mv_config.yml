@@ -1,7 +1,12 @@
 # Fields are extract from grib file according to expected shortName, typeOfLevel, level. 
 
 # List of 'shortName' fields to plot --> if not available, create the necessary attributes for the variable below
-# For plotting 10m wind speed -> '10mw', otherwise use the expected grib shortName 
+# Special cases where variable is differted from expected grib shortName
+# For plotting 10m wind speed     -> '10mw',  
+# For plotting 10m wind direction -> '10mwd' 
+# For plotting wind speed at a given level  -> 'u' or 'v'  
+# For plotting wind direction at a given level  -> 'ud' or 'vd'
+
 shortNameList: ['2t','t'] #'10mw','u','tirf'] #,'prmsl'
 
 # In case of accumulated fields, given the forecast time T, we calculate 'T - T_int_accum_hour' 
@@ -133,6 +138,20 @@ prmsl:
   contour_shade_max_level_colour: "magenta"
   countList: [] #[0,1,2,3,4,5,6,7,8,9,10,12,14,16]
 
+# 10m wind direction
+10mwd:
+  # expected typeOfLevel as in grib file
+  typeOfLevel: 'heightAboveGround'
+  # expected level
+  level: '10'
+  # if accumulated field
+  accumulated: False
+  # Option for customizing the plot (colorbar and coutour)
+  # leave list empty 'countList: []' to plot using min/max of the variable 
+  contour_shade_min_level_colour: "blue"    
+  contour_shade_max_level_colour: "red"
+  countList: [] #[0,1,2,3,4,5,6,7,8,9,10,12,14,16]
+
 # 2m relative humidity
 2r:
   # expected typeOfLevel as in grib file
@@ -176,6 +195,20 @@ u:
   # leave list empty 'countList: []' to plot using min/max of the variable 
   contour_shade_min_level_colour: "blue_green"    
   contour_shade_max_level_colour: "magenta"
+  countList: [] #[0,1,2,3,4,5,6,7,8,9,10,12,14,16,18,20,22]
+
+# Specify 'ud' or 'vd' to calculate wind direction at a given level
+ud:
+  # expected typeOfLevel as in grib file
+  typeOfLevel: 'isobaricInhPa'
+  # expected level
+  level: '850'
+  # if accumulated field
+  accumulated: False
+  # Option for customizing the plot (colorbar and coutour)
+  # leave list empty 'countList: []' to plot using min/max of the variable 
+  contour_shade_min_level_colour: "blue"    
+  contour_shade_max_level_colour: "red"
   countList: [] #[0,1,2,3,4,5,6,7,8,9,10,12,14,16,18,20,22]
 
 z:

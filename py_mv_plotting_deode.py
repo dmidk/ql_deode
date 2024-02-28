@@ -167,23 +167,31 @@ for shortName in varList:
         myMax  = mv.maxvalue(var_deacc)
         myStd = mv.stdev_a(var_deacc)
     else:
-    
+
+        # calculate 10m wind speed
         if shortName == '10mw':
             u_10m =  myFC.select(shortName='10u', typeOfLevel=typeOfLevel, level=level, stepRange=FC_step)
             v_10m =  myFC.select(shortName='10v', typeOfLevel=typeOfLevel, level=level, stepRange=FC_step)
             var = mv.sqrt(u_10m*u_10m + v_10m*v_10m)
             var = mv.grib_set_long(var, ['paramId', 10])
-            # calculate also direction
-            dir_wind = mv.direction(u_10m, v_10m)
-            dir_wind = mv.grib_set_long(dir_wind, ["paramId", 3031])
+        # calculate 10m wind direction
+        elif shortName == '10mwd':
+            u_10m =  myFC.select(shortName='10u', typeOfLevel=typeOfLevel, level=level, stepRange=FC_step)
+            v_10m =  myFC.select(shortName='10v', typeOfLevel=typeOfLevel, level=level, stepRange=FC_step)
+            var = mv.direction(u_10m, v_10m)
+            var = mv.grib_set_long(var, ["paramId", 3031])
+        # calculate wind speed at given level
         elif shortName == 'u' or shortName == 'v':
             u_10m =  myFC.select(shortName='u', typeOfLevel=typeOfLevel, level=level, stepRange=FC_step)
             v_10m =  myFC.select(shortName='v', typeOfLevel=typeOfLevel, level=level, stepRange=FC_step)
             var = mv.sqrt(u_10m*u_10m + v_10m*v_10m)
             var = mv.grib_set_long(var, ['paramId', 10])
-            # calculate also direction
-            dir_wind = mv.direction(u_10m, v_10m)
-            dir_wind = mv.grib_set_long(dir_wind, ['paramId', 3031])
+        # calculate wind direction at given level
+        elif shortName == 'ud' or shortName == 'vd':
+            u_10m =  myFC.select(shortName='u', typeOfLevel=typeOfLevel, level=level, stepRange=FC_step)
+            v_10m =  myFC.select(shortName='v', typeOfLevel=typeOfLevel, level=level, stepRange=FC_step)
+            var = mv.direction(u_10m, v_10m)
+            var = mv.grib_set_long(var, ['paramId', 3031])
         else:
             var = myFC.select(shortName=shortName, typeOfLevel=typeOfLevel, level=level, stepRange=FC_step)
 
