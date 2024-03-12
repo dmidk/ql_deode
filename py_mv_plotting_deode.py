@@ -68,8 +68,9 @@ destPath = os.path.join(scratchDir,'tmp_grib',expId)
 if not os.path.exists(destPath):
     os.makedirs(destPath)       
 
-fc_int = int(FC_HHH)
-FC_step = str(fc_int)
+fc_int    = int(FC_HHH)
+FC_step   = str(fc_int)
+FC_step_1 = str(fc_int-1)
 
 if fc_int < 10:
    FC_HHH_str = '000'+str(fc_int)
