@@ -4,10 +4,10 @@
 # mem > 8000 can be necessary for high reslution domains
 #SBATCH --job-name=py_mv_plotting_ita
 #SBATCH --qos=nf
-#SBATCH --time=02:00:00
+#SBATCH --time=12:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --mem=16000
+#SBATCH --mem=128000
 
 module load python3/3.8.8-01           #3.10.10-01
 module load ecmwf-toolbox/2021.08.3.0  #2023.04.1.0
@@ -28,31 +28,55 @@ userId=nhad
 #expNames=(harmonie_DK_2500 harmonie_DK_1500 harmonie_DK_750)
 
 #domNames=(DK_500x500_1500m)
+domNames=(corse_1500x1500_500m corse_1500x1500_500m)
 #expNames=(DK_1500m_Quad_20210708)
+expNames=(harmonie_corsica_500_HRES harmonie_corsica_500_ATOSDT_00UTCbd)
 
 #domNames=(bavaria_800x800_500m bavaria_800x800_750m bavaria_800x800_500m bavaria_800x800_500m)  
 #expNames=(harmonie_bavaria_500_2023dec harmonie_bavaria_750_2023dec harmonie_bavaria_500_2023dec_HRES harmonie_bavaria_750_2023dec_HRES) 
-domNames=(DA_1500x1500_500m DA_1500x1500_500m DA_1500x1500_500m)
-expNames=(harmonie_DA500g_SP ALARO_DA500g arome_DA500g)
+#domNames=(DA_1500x1500_500m DA_1500x1500_500m DA_1500x1500_500m)
+#expNames=(harmonie_DA500g_SP ALARO_DA500g arome_DA500g)
 #domNames=(DK_1500x1500_500m)
 #expNames=(harmonie_DK500g_SP)
 
-#domNames=(bavaria_800x800_750m )   
-#expNames=(harmonie_bavaria_750_2023dec_HRES )  
+#domNames=(bavaria_800x800_750m)   
+#expNames=(harmonie_bavaria_750_2023dec_HRES)  
 #domNames=(ITA_800x800_500m ITA_800x800_750m) 
 #expNames=(harmonie_ita_500_ciaran harmonie_ita_750_ciaran) 
-#domNames=(brtny_800x800_500m brtny_800x800_500m brtny_800x800_750m brtny_800x800_750m ) 
+#domNames=(brtny_800x800_500m brtny_800x800_500m brtny_800x800_750m brtny_800x800_750m) 
 #expNames=(harmonie_brittany_500_ciaran harmonie_brittany_500_ciaran_HRES harmonie_brittany_750_ciaran harmonie_brittany_750_ciaran_HRES) 
-#domNames=(brtny_800x800_500m)
-#expNames=(harmonie_brittany_500_ciaran)
+#domNames=(brtny_1500x1500_500m)
+#expNames=(harmonie_brittany_500_ciaran_ATOSDT_12UTCbd)
+#expNames=(harmonie_brittany_500_ciaran_HRES)
 #domNames=(NL_800x800_500m NL_800x800_750m NL_800x800_750m)
 #expNames=(harmonie_AQ_500_arome harmonie_AQ_750_arome harmonie_AQ_750_summer_case)
 
+#domNames=(AUSTRIA_CASES)
+#expNames=(CY46h1_HARMONIE_AROME_austria)
+#expNames=(CY46h1_HARMONIE_AROME_austria_dec23)
+#domNames=(sk_1500x1500_500m sk_1500x1500_500m)
+#expNames=(harmonie_AQ_500_winter alaro_AQ_500_winter arome_AQ_500_winter)
+#expNames=(harmonie_AQ_500_winter_ATOSDT alaro_AQ_500_winter_ATOSDT)
+
+#domNames=(sk_1500x1500_500m sk_1500x1500_500m)
+#expNames=(alaro_AQ_500_winter arome_AQ_500_winter)
+
+#domNames=(faroe_1500x1500_500m)
+#expNames=(harmonie_faroe_500_isha)
+#expNames=(harmonie_faroe_500_isha_HRES_00UTC)
+#expNames=(harmonie_faroe_500_isha_HRES_06UTC)
+#expNames=(harmonie_faroe_500_isha_HRES_12UTC)
+#expNames=(harmonie_faroe_500_isha_HRES_18UTC)
+
+#domNames=(benelux_800x800_500m benelux_800x800_750m bnlux_800x800_25km)
+#expNames=(harmonie_AQ_500_summer harmonie_AQ_750_summer harmonie_AQ_2500_summer)
 
 # List of AN times
 #hours=(00 12) 
 hours=(00) # Brittany Ciaran 11-2023
 # Start and end year
+#year1=2017 # AQ SK
+#year2=2017 # AQ SK
 year1=2023 # Ciaran
 year2=2023 # Ciaran
 #year1=2018 # AQ Benelux
@@ -60,16 +84,22 @@ year2=2023 # Ciaran
 # Start and end month
 month1=12
 month2=12
+#month1=12 
+#month2=12
+#month1=07 
+#month2=07
 #month1=07 # AQ Benelux
 #month2=07 # AQ Benelux
 # Start and end day
-day1=20
-day2=20
+day1=21
+day2=21
+#day1=20
+#day2=22
 #day1=24 # AQ Benelux
 #day2=25 # AQ Benelux
 # Start and end fc length
-fc1=39
-fc2=42
+fc1=00
+fc2=48
 inc=1
 
 # --> Adjust dates/time (YEAR, MONTH, DAY, FC STEP) in loops below 

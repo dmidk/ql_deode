@@ -1,12 +1,12 @@
 # Fields are extract from grib file according to expected shortName, typeOfLevel, level. 
 
 # Plot fields in shortNameList --> if not available, create the necessary attributes for the variable below
-shortNameList: ['msl','10mw']
+shortNameList: ['wgst']
 #shortNameList: ['sprate'] #,'2t', '10mw','t'] # Italy Ciaran 11-2023
 #shortNameList: ['tirf'] #,'2t', '10mw','t'] # Italy Ciaran 11-2023
 #shortNameList: ['10mw'] # Brittany Ciaran 11-2023
 #shortNameList: ['z']
-#shortNameList: ['2t'] # AQ-Benelux 07-2018
+#shortNameList: ['2t'] # AQ-Benelux 07-2018, AQ Slovakia 01-2017
 
 # Some examples of shortName:
 # '2t': 2m temperature
@@ -20,10 +20,15 @@ int_accum_hour: 1
 # Custom lat/lon domain 
 # [lat_bottom_left, lon_bottom_left, lat_top_right, lon_top_right]
 #lat_lon_map_area: [50.25,2.75,53.75,7] # AQ_Benelux 07-2018
+#lat_lon_map_area: [45,-9,52,0] # Brittany Ciaran 11-2023, large
 #lat_lon_map_area: [47,-6,50,-3] # Brittany Ciaran 11-2023
+#lat_lon_map_area: [44, 6, 52, 18] # Austria 2023
+#lat_lon_map_area: [57,-12,67,2] # Storm Isha 2024 
 #lat_lon_map_area: [41.5,9.5,45.5,13.0] # Italy Ciaran 11-2023
 #lat_lon_map_area: [46.5,9.5,50.5,13.5] # Bavaria 12-2023
-lat_lon_map_area: [52.0,4.0,58.0,16.0] # DK Pia 12-2023
+#lat_lon_map_area: [52.0,4.0,58.0,16.0] # DK Pia 12-2023
+lat_lon_map_area: [38.0,6.0,43.0,11.0] # Corsica 12-2023
+#lat_lon_map_area: [44.3,11.1,53.3,24.1] # AQ SK 01-2017
 lat_inc: 1
 lon_inc: 1
 
@@ -110,7 +115,8 @@ msl:
   # leave list empty 'countList: []' to plot using min/max of the variable 
   contour_shade_min_level_colour: "yellow"
   contour_shade_max_level_colour: "green"
-  countList: [950,951,952,953,954, 955, 960, 965, 970, 975, 980, 985, 990, 995, 1000, 1005, 1010, 1015, 1020, 1025, 1030, 1035, 1040, 1045] 
+  #countList: [945,946,947,948,949,950,952,954,956, 960, 965, 970, 975, 980, 985, 990, 995, 1000, 1005, 1010, 1015, 1020, 1025, 1030, 1035, 1040, 1045] 
+  countList: [960, 965, 970, 975, 980, 985, 990, 995, 1000, 1005, 1010, 1015, 1020, 1025, 1030, 1035, 1040, 1045] 
 
 ####################
 # typeOfLevel = heightAboveGround
@@ -128,7 +134,8 @@ msl:
   # leave list empty 'countList: []' to plot using min/max of the variable 
   contour_shade_min_level_colour: "blue"
   contour_shade_max_level_colour: "red"
-  countList: [1,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,36,40]
+  countList: [10,14,18,22,26,28,30,32,33,34,35,36,37,38,39,40]
+  #countList: [-30,-26,-22,-18,-14,-12,-10,-8,-6,-4,-2,-1,0,1,2,4,6,8,10,12,14,18,22,26,30]
 
 # 10m wind speed
 10mw:
@@ -140,9 +147,23 @@ msl:
   accumulated: False
   # Option for customizing the plot (colorbar and coutour)
   # leave list empty 'countList: []' to plot using min/max of the variable 
-  contour_shade_min_level_colour: "green"    
-  contour_shade_max_level_colour: "red"
-  countList: [1,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,36,40, 48] #[0,1,2,3,4,5,6,7,8,9,10,12,14,16]
+  contour_shade_min_level_colour: "blue_green"    
+  contour_shade_max_level_colour: "magenta"
+  countList: [1,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,36,40,48] #[0,1,2,3,4,5,6,7,8,9,10,12,14,16]
+
+# 10m zonal wind gust 
+wgst:
+  # expected typeOfLevel as in grib file
+  typeOfLevel: 'heightAboveGround'
+  # expected level
+  level: '10'
+  # if accumulated field
+  accumulated: False  
+  # Option for customizing the plot (colorbar and coutour)
+  # leave list empty 'countList: []' to plot using min/max of the variable 
+  contour_shade_min_level_colour: "blue_green"    
+  contour_shade_max_level_colour: "magenta"
+  countList: [2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50] #[0,1,2,3,4,5,6,7,8,9,10,12,14,16]
 
 # 2m relative humidity
 2r:

@@ -70,6 +70,7 @@ if not os.path.exists(destPath):
 
 fc_int = int(FC_HHH)
 FC_step = str(fc_int)
+FC_step_1 = str(fc_int-1)
 
 if fc_int < 10:
    FC_HHH_str = '000'+str(fc_int)
@@ -175,6 +176,16 @@ for shortName in varList:
             # calculate also direction
             dir_wind = mv.direction(u_10m, v_10m)
             dir_wind = mv.grib_set_long(dir_wind, ["paramId", 3031])
+        elif shortName == 'wgst':
+            ugst_10m =  myFC.select(shortName='10efg', typeOfLevel=typeOfLevel, level=level, stepRange=FC_step_1+'-'+FC_step)
+            vgst_10m =  myFC.select(shortName='10nfg', typeOfLevel=typeOfLevel, level=level, stepRange=FC_step_1+'-'+FC_step)
+        #    print(ugst_10m)
+        #    print('v',vgst_10m)
+            var = mv.sqrt(ugst_10m*ugst_10m + vgst_10m*vgst_10m)
+            var = mv.grib_set_long(var, ['paramId', 260065])
+        #    # calculate also direction
+        #    #dir_wgst = mv.direction(ugst_10m, vgst_10m)
+        #    #dir_wgst = mv.grib_set_long(dir_wgst, ["paramId", 303132])
         elif shortName == 'u' or shortName == 'v':
             u_10m =  myFC.select(shortName='u', typeOfLevel=typeOfLevel, level=level, stepRange=FC_step)
             v_10m =  myFC.select(shortName='v', typeOfLevel=typeOfLevel, level=level, stepRange=FC_step)
@@ -182,7 +193,7 @@ for shortName in varList:
             var = mv.grib_set_long(var, ['paramId', 10])
             # calculate also direction
             dir_wind = mv.direction(u_10m, v_10m)
-            dir_wind = mv.grib_set_long(dir_wind, ['paramId', 3031])
+           # dir_wind = mv.grib_set_long(dir_wind, ['paramId', 3031])
         else:
             var = myFC.select(shortName=shortName, typeOfLevel=typeOfLevel, level=level, stepRange=FC_step)
 
@@ -252,8 +263,10 @@ for shortName in varList:
         map_coastline_sea_shade         = "on",
         map_coastline_sea_shade_colour  = "RGB(0.8178,0.9234,0.9234)", 
         map_coastline_thickness         =  2,
-        map_boundaries                  = "off",
+        map_boundaries                  = "on",
+        map_boundaries_thickness        =  2, 
         map_boundaries_colour           = "charcoal",
+        map_cities                      = "on", 
         map_grid_colour                 = "charcoal",
         map_grid_latitude_increment     = lat_inc,    
         map_grid_longitude_increment    = lon_inc
@@ -279,12 +292,12 @@ for shortName in varList:
             contour_shade_max_level_colour = contour_shade_max_level_colour, 
             contour_shade_colour_direction = "clockwise",
             contour_level_selection_type   = "LEVEL_LIST",
-            contour_level_list = countList 
-            )    
+            contour_level_list = countList
+            )
     else:    
         xs_shade = mv.mcont(
             legend="on",
-            contour_line_style = "dash",            
+            contour_line_style = "dash", 
             contour_line_colour = "charcoal",
             contour_highlight   = "off",
             contour_label       = "off",
@@ -296,9 +309,25 @@ for shortName in varList:
             contour_shade_method="area_fill",
             contour_shade_min_level_colour = contour_shade_min_level_colour,
             contour_shade_max_level_colour = contour_shade_max_level_colour, 
-            contour_shade_colour_direction = "clockwise"            
-            #contour_shade_colour_list_policy="dynamic",
         )    
+
+
+            #contour_shade_colour_list_policy="dynamic",
+    
+#contour_automatic_setting      = "ecmwf"
+        #contour_line_style = "dash", 
+        #contour_line_colour = "charcoal",
+        #contour_highlight   = "off",
+        #contour_label       = "off",
+        #contour_shade="on",
+        #contour_level_selection_type="interval",
+        #contour_max_level=int_max,
+        #contour_min_level=int_min,
+        #contour_interval=interval_step,
+        #contour_shade_method="area_fill",
+        #contour_shade_min_level_colour = contour_shade_min_level_colour,
+        #contour_shade_max_level_colour = contour_shade_max_level_colour, 
+        #contour_shade_colour_direction = "clockwise",'''
 
     mydir = os.path.join(outPath, expId,basedate)
     if not os.path.exists(mydir):
