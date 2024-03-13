@@ -6,7 +6,7 @@
 # For plotting 10m wind direction -> '10mwd' 
 # For plotting wind speed at a given level  -> 'u' or 'v'  
 # For plotting wind direction at a given level  -> 'ud' or 'vd'
-# For plotting wind gust speed  -> 'wgst'
+# For plotting wind gust speed  -> '10mwgst'
 
 shortNameList: ['2t','t'] #'10mw','u','tirf'] #,'prmsl'
 
@@ -154,7 +154,7 @@ prmsl:
   countList: [] #[0,1,2,3,4,5,6,7,8,9,10,12,14,16]
 
 # 10m wind gust speed
-wgst:
+10mwgst:
   # expected typeOfLevel as in grib file
   typeOfLevel: 'heightAboveGround'
   # expected level
