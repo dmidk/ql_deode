@@ -68,8 +68,9 @@ destPath = os.path.join(scratchDir,'tmp_grib',expId)
 if not os.path.exists(destPath):
     os.makedirs(destPath)       
 
-fc_int = int(FC_HHH)
-FC_step = str(fc_int)
+fc_int    = int(FC_HHH)
+FC_step   = str(fc_int)
+FC_step_1 = str(fc_int-1)
 
 if fc_int < 10:
    FC_HHH_str = '000'+str(fc_int)
@@ -192,6 +193,12 @@ for shortName in varList:
             v_10m =  myFC.select(shortName='v', typeOfLevel=typeOfLevel, level=level, stepRange=FC_step)
             var = mv.direction(u_10m, v_10m)
             var = mv.grib_set_long(var, ['paramId', 3031])
+        # calculate 10m wind gust speed        
+        elif shortName == '10mwgst':
+            ugst_10m =  myFC.select(shortName='10efg', typeOfLevel=typeOfLevel, level=level, stepRange=FC_step_1+'-'+FC_step)
+            vgst_10m =  myFC.select(shortName='10nfg', typeOfLevel=typeOfLevel, level=level, stepRange=FC_step_1+'-'+FC_step)
+            var = mv.sqrt(ugst_10m*ugst_10m + vgst_10m*vgst_10m)
+            var = mv.grib_set_long(var, ['paramId', 260065])
         else:
             var = myFC.select(shortName=shortName, typeOfLevel=typeOfLevel, level=level, stepRange=FC_step)
 

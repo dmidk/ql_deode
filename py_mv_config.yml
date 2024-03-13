@@ -6,6 +6,7 @@
 # For plotting 10m wind direction -> '10mwd' 
 # For plotting wind speed at a given level  -> 'u' or 'v'  
 # For plotting wind direction at a given level  -> 'ud' or 'vd'
+# For plotting wind gust speed  -> '10mwgst'
 
 shortNameList: ['2t','t'] #'10mw','u','tirf'] #,'prmsl'
 
@@ -151,6 +152,21 @@ prmsl:
   contour_shade_min_level_colour: "blue"    
   contour_shade_max_level_colour: "red"
   countList: [] #[0,1,2,3,4,5,6,7,8,9,10,12,14,16]
+
+# 10m wind gust speed
+10mwgst:
+  # expected typeOfLevel as in grib file
+  typeOfLevel: 'heightAboveGround'
+  # expected level
+  level: '10'
+  # if accumulated field
+  accumulated: False
+  # Option for customizing the plot (colorbar and coutour)
+  # leave list empty 'countList: []' to plot using min/max of the variable 
+  contour_shade_min_level_colour: "blue_green"
+  contour_shade_max_level_colour: "magenta"
+  countList: [2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50]
+
 
 # 2m relative humidity
 2r:
