@@ -194,7 +194,7 @@ for shortName in varList:
             var = mv.direction(u_10m, v_10m)
             var = mv.grib_set_long(var, ['paramId', 3031])
         # calculate 10m wind gust speed        
-        elif shortName == 'wgst':
+        elif shortName == '10mwgst':
             ugst_10m =  myFC.select(shortName='10efg', typeOfLevel=typeOfLevel, level=level, stepRange=FC_step_1+'-'+FC_step)
             vgst_10m =  myFC.select(shortName='10nfg', typeOfLevel=typeOfLevel, level=level, stepRange=FC_step_1+'-'+FC_step)
             var = mv.sqrt(ugst_10m*ugst_10m + vgst_10m*vgst_10m)
